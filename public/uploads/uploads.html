@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="/public/style.css" />
-    <link rel="stylesheet" href="/public/uploads/uploads.css" />
-  </head>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>{{.Id}} - Kiku Upload</title>
+  <meta name="description" content="Kiku - Uploaded image by Tarab1te" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta property="og:title" content="Uploaded via Kiku" />
+  <meta property="og:description" content="Tarab1te's ShareX upload server" />
+  <meta property="og:image" content="{{.Image}}" />
+  <meta property="og:url" content="{{.Url}}/uploads/{{.Id}}" />
+  <meta name="theme-color" content="#F6C177" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="stylesheet" href="/public/style.css" />
+  <link rel="stylesheet" href="/public/uploads/uploads.css" />
+</head>
+
   <body>
     <nav>
 <nav>

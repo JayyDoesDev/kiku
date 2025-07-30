@@ -14,6 +14,7 @@ import (
 type Page struct {
 	Id    string
 	Image string
+	Url   string
 }
 
 func UploadsHandler(tmpl *template.Template) http.HandlerFunc {
@@ -34,6 +35,7 @@ func UploadsHandler(tmpl *template.Template) http.HandlerFunc {
 				data := Page{
 					Id:    file.Name(),
 					Image: "/files/" + file.Name(),
+					Url:   os.Getenv("API_URL"),
 				}
 				if err := tmpl.ExecuteTemplate(w, "uploads.html", data); err != nil {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
