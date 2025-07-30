@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Kiku - Self-hosted ShareX Server</title>
+    <meta
+      name="description"
+      content="Kiku - Your personal ShareX image server"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="/public/style.css" />
+    <link rel="stylesheet" href="/public/home/home.css" />
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/uploads">Uploads</a></li>
+        <li><a href="/help">Help</a></li>
+      </ul>
+    </nav>
+
+    <div class="container">
+      <img src="/public/assets/kiku.png" alt="kiku" width="200rem" />
+      <h1 class="title">Welcome to Kiku 🌼</h1>
+      <p
+        style="
+          max-width: 500px;
+          margin: 0 auto 2rem auto;
+          color: #dcddde;
+          font-size: 1.1rem;
+          line-height: 1.5;
+        "
+      >
+        Kiku is a lightweight, self-hosted ShareX server for fast, private image
+        uploading and sharing.
+        <br /><br />
+        Use your API key with ShareX or your favorite HTTP client to upload
+        images securely. View and share your uploads publicly without hassle.
+      </p>
+
+      <div class="buttons">
+        <button onclick="location.href='/uploads'">view uploads</button>
+        <button onclick="location.href='https://github.com/jayydoesdev/kiku'">
+          github
+        </button>
+      </div>
+    </div>
+    <a href="https://github.com/jayydoesdev"
+      ><footer>
+        made with
+        <span><i class="bi bi-heart-fill" style="color: red"></i></span> by
+        JayyDoesDev
+      </footer></a
+    >
+  </body>
+</html>

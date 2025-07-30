@@ -1,6 +1,8 @@
+// sharex/uploads.go
 package sharex
 
 import (
+	"html/template"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -9,24 +11,37 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func UploadsHandler(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	idx := params["id"]
-	files, err := os.ReadDir("./storage")
-	if err != nil {
-		http.Error(w, "Unable to fetch storage", http.StatusInternalServerError)
-		return
-	}
+type Page struct {
+	Id    string
+	Image string
+}
 
-	if len(files) == 0 {
-		http.Error(w, "Storage empty", http.StatusInternalServerError)
-		return
-	}
-
-	for _, file := range files {
-		if strings.TrimSuffix(file.Name(), filepath.Ext(file.Name())) == idx {
-			http.ServeFile(w, r, filepath.Join("storage", file.Name()))
+func UploadsHandler(tmpl *template.Template) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		params := mux.Vars(r)
+		idx := params["id"]
+		files, err := os.ReadDir("./storage")
+		if err != nil {
+			http.Error(w, "Unable to fetch storage", http.StatusInternalServerError)
 			return
 		}
+		if len(files) == 0 {
+			http.Error(w, "Storage empty", http.StatusInternalServerError)
+			return
+		}
+		for _, file := range files {
+			if strings.TrimSuffix(file.Name(), filepath.Ext(file.Name())) == idx {
+				data := Page{
+					Id:    file.Name(),
+					Image: "/files/" + file.Name(),
+				}
+				if err := tmpl.ExecuteTemplate(w, "uploads.html", data); err != nil {
+					http.Error(w, err.Error(), http.StatusInternalServerError)
+					return
+				}
+				return
+			}
+		}
+		http.NotFound(w, r)
 	}
 }

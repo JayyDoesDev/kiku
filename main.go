@@ -1,8 +1,9 @@
+// main.go
 package main
 
 import (
-	"encoding/json"
 	"fmt"
+	"html/template"
 	"kiku/main/middleware"
 	"kiku/main/routes/sharex"
 	"log"
@@ -13,29 +14,30 @@ import (
 	"github.com/joho/godotenv"
 )
 
+var tmpl *template.Template
+
+func init() {
+	tmpl = template.Must(template.ParseGlob("public/**/*.html"))
+}
+
 func main() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("Failed to load ENV")
 	}
+
 	r := mux.NewRouter()
+	r.PathPrefix("/public/").Handler(http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
+	r.PathPrefix("/files/").Handler(http.StripPrefix("/files/", http.FileServer(http.Dir("./storage"))))
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-
-		response := map[string]string{
-			"hello": "world",
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-		err := json.NewEncoder(w).Encode(response)
-		if err != nil {
-			http.Error(w, "Error", http.StatusInternalServerError)
-			return
+		if err := tmpl.ExecuteTemplate(w, "home.html", nil); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	}).Methods("GET")
+
 	r.Handle("/upload", middleware.Auth(http.HandlerFunc(sharex.UploadHandler))).Methods("POST")
-	r.Handle("/uploads/", http.StripPrefix("/uploads/", http.FileServer(http.Dir("./storage"))))
-	r.HandleFunc("/uploads/{id}", sharex.UploadsHandler).Methods("GET")
+	r.HandleFunc("/uploads/{id}", sharex.UploadsHandler(tmpl)).Methods("GET")
 
 	fmt.Println("Listening port 3000")
 	log.Fatal(http.ListenAndServe(os.Getenv("PORT"), r))
