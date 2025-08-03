@@ -1,4 +1,4 @@
-package sharex
+package photos
 
 import (
 	"encoding/json"
@@ -13,13 +13,6 @@ import (
 type Response struct {
 	Success bool   `json:"success"`
 	Url     string `json:"url"`
-}
-
-type Request struct {
-	File        http.File `json:"file"`
-	Name        string    `json:"name"`
-	Title       string    `json:"title"`
-	Description string    `json:"description"`
 }
 
 func UploadHandler(w http.ResponseWriter, r *http.Request) {

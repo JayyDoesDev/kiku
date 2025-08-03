@@ -1,11 +1,12 @@
-// main.go
 package main
 
 import (
 	"fmt"
 	"html/template"
+	"kiku/main/lib"
 	"kiku/main/middleware"
-	"kiku/main/routes/sharex"
+	"kiku/main/routes/photos"
+	"kiku/main/routes/shortener"
 	"log"
 	"net/http"
 	"os"
@@ -17,15 +18,15 @@ import (
 var tmpl *template.Template
 
 func init() {
-	tmpl = template.Must(template.ParseGlob("public/**/*.html"))
-}
-
-func main() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("Failed to load ENV")
 	}
+	lib.InitMongoDB()
+	tmpl = template.Must(template.ParseGlob("public/**/*.html"))
+}
 
+func main() {
 	r := mux.NewRouter()
 	r.PathPrefix("/public/").Handler(http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 	r.PathPrefix("/files/").Handler(http.StripPrefix("/files/", http.FileServer(http.Dir("./storage"))))
@@ -36,8 +37,10 @@ func main() {
 		}
 	}).Methods("GET")
 
-	r.Handle("/upload", middleware.Auth(http.HandlerFunc(sharex.UploadHandler))).Methods("POST")
-	r.HandleFunc("/uploads/{id}", sharex.UploadsHandler(tmpl)).Methods("GET")
+	r.Handle("/upload", middleware.Auth(http.HandlerFunc(photos.UploadHandler))).Methods("POST")
+	r.Handle("/shorten", middleware.Auth(http.HandlerFunc(shortener.ShortenHandler))).Methods("POST")
+	r.HandleFunc("/uploads/{id}", photos.UploadsWithParametersHandler(tmpl)).Methods("GET")
+	r.HandleFunc("/uploads", photos.UploadsHandler(tmpl)).Methods("GET")
 
 	fmt.Println("Listening port 3000")
 	log.Fatal(http.ListenAndServe(os.Getenv("PORT"), r))

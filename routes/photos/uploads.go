@@ -1,5 +1,4 @@
-// sharex/uploads.go
-package sharex
+package photos
 
 import (
 	"html/template"
@@ -19,6 +18,20 @@ type Page struct {
 
 func UploadsHandler(tmpl *template.Template) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		files, err := os.ReadDir("./storage")
+		if err != nil {
+			http.Error(w, "Unable to fetch storage", http.StatusInternalServerError)
+			return
+		}
+		if len(files) == 0 {
+			http.Error(w, "Storage empty", http.StatusInternalServerError)
+			return
+		}
+	}
+}
+
+func UploadsWithParametersHandler(tmpl *template.Template) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
 		params := mux.Vars(r)
 		idx := params["id"]
 		files, err := os.ReadDir("./storage")
@@ -37,7 +50,7 @@ func UploadsHandler(tmpl *template.Template) http.HandlerFunc {
 					Image: "/files/" + file.Name(),
 					Url:   os.Getenv("API_URL"),
 				}
-				if err := tmpl.ExecuteTemplate(w, "uploads.html", data); err != nil {
+				if err := tmpl.ExecuteTemplate(w, "upload.html", data); err != nil {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
 					return
 				}
