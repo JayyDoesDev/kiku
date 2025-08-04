@@ -2,6 +2,7 @@ package shortener
 
 import (
 	"encoding/json"
+	"html/template"
 	"kiku/main/db"
 	"kiku/main/routes/photos"
 	"net/http"
@@ -9,6 +10,12 @@ import (
 
 	"github.com/gorilla/mux"
 )
+
+type Page struct {
+	ID          string
+	Destination string
+	Url         string
+}
 
 func ShortenHandler(w http.ResponseWriter, r *http.Request) {
 	var data struct {
@@ -34,16 +41,25 @@ func ShortenHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(&photos.Response{Url: shortened_url})
 }
 
-func GoToLongLinkHandler(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	idx := params["id"]
+func GoToLongLinkHandler(tmpl *template.Template) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		params := mux.Vars(r)
+		idx := params["id"]
 
-	shortned_url := db.FindShortenedUrl(idx)
+		shortned_url := db.FindShortenedUrl(idx)
+		if shortned_url != nil {
+			data := Page{
+				ID:          shortned_url.ID,
+				Destination: shortned_url.Destination,
+				Url:         os.Getenv("API_URL"),
+			}
+			if err := tmpl.ExecuteTemplate(w, "redirect.html", data); err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			return
+		}
 
-	if shortned_url != nil {
-		http.Redirect(w, r, shortned_url.Destination, http.StatusSeeOther)
-		return
+		http.NotFound(w, r)
 	}
-
-	http.NotFound(w, r)
 }

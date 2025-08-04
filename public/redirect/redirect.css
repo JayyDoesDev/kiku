@@ -1,0 +1,16 @@
+.destination {
+  background-color: #f6c17775;
+  border: solid;
+  border-color: #f6c177;
+  border-width: 0.2px;
+  border-radius: 6px;
+}
+
+.destination .site a {
+  text-decoration: none;
+  color: #9ccfd8;
+}
+
+.destination .site {
+  margin-top: -2vh;
+}

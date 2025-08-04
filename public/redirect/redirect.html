@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>{{.ID}} - Kiku Redirect</title>
+    <meta name="description" content="Kiku - Link Shortened by Tarab1te" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta property="og:title" content="Uploaded via Kiku" />
+    <meta property="og:description" content="Tarab1te's ShareX upload server" />
+    <meta property="og:url" content="{{.Url}}/{{.ID}}" />
+    <meta name="theme-color" content="#F6C177" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/public/style.css" />
+    <link rel="stylesheet" href="/public/redirect/redirect.css">
+    <meta http-equiv="refresh" content="6; url={{.Destination}}" />
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/uploads">Uploads</a></li>
+        <li><a href="/help">Help</a></li>
+      </ul>
+    </nav>
+    <div class="container">
+      <img src="/public/assets/kiku.png" alt="kiku" width="200rem" />
+      <h1>
+        You will be redirected in <span id="timer"></span> seconds!
+      </h1>
+      <div class="destination">
+        <h2>Destination</h2>
+        <h1 class="site"><a href="{{.Destination}}">{{.Destination}}</a></h1>
+      </div>
+      <div class="buttons">
+        <button onclick="location.href='{{.Destination}}'">redirect now</button>
+        <button onclick="location.href='/'">cancel</button>
+      </div>
+    </div>
+    <script>
+      var countDown = 5;
+      var time = countDown;
+      function updateTime() {
+        var doc = document.getElementById("timer");
+        if (time <= 0) {
+          doc.innerText = 0;
+        } else {
+          var seconds = time % 60;
+          doc.innerText = seconds;
+          time--;
+        }
+      }
+    </script>
+    <script>
+      setInterval(updateTime, 1000);
+    </script>
+  </body>
+</html>
