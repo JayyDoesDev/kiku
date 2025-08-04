@@ -39,6 +39,7 @@ func main() {
 
 	r.Handle("/upload", middleware.Auth(http.HandlerFunc(photos.UploadHandler))).Methods("POST")
 	r.Handle("/shorten", middleware.Auth(http.HandlerFunc(shortener.ShortenHandler))).Methods("POST")
+	r.Handle("/short_urls", http.HandlerFunc(shortener.ShortUrlsHandler)).Methods("GET")
 	r.HandleFunc("/uploads/{id}", photos.UploadsWithParametersHandler(tmpl)).Methods("GET")
 	r.HandleFunc("/uploads", photos.UploadsHandler(tmpl)).Methods("GET")
 
