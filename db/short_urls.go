@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"log"
+	"strings"
 
 	"kiku/main/lib"
 
@@ -69,4 +70,16 @@ func ShortenUrl(url string) ShortUrl {
 
 	log.Println("Short ID already exists, retrying not implemented here")
 	return ShortUrl{}
+}
+
+func FindShortenedUrl(id string) *ShortUrl {
+	shortUrls := GetShortenedUrls()
+
+	for _, url := range shortUrls {
+		if strings.Compare(url.ID, id) == 0 {
+			return &url
+		}
+	}
+
+	return nil
 }

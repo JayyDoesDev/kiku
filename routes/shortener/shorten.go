@@ -6,6 +6,8 @@ import (
 	"kiku/main/routes/photos"
 	"net/http"
 	"os"
+
+	"github.com/gorilla/mux"
 )
 
 func ShortenHandler(w http.ResponseWriter, r *http.Request) {
@@ -30,4 +32,18 @@ func ShortenHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(&photos.Response{Url: shortened_url})
+}
+
+func GoToLongLinkHandler(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	idx := params["id"]
+
+	shortned_url := db.FindShortenedUrl(idx)
+
+	if shortned_url != nil {
+		http.Redirect(w, r, shortned_url.Destination, http.StatusSeeOther)
+		return
+	}
+
+	http.NotFound(w, r)
 }
