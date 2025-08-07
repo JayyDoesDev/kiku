@@ -42,7 +42,6 @@ func main() {
 	r.Handle("/short_urls", http.HandlerFunc(shortener.ShortUrlsHandler)).Methods("GET")
 	r.HandleFunc("/{id}", shortener.GoToLongLinkHandler(tmpl)).Methods("GET")
 	r.HandleFunc("/uploads/{id}", photos.UploadsWithParametersHandler(tmpl)).Methods("GET")
-	r.HandleFunc("/uploads", photos.UploadsHandler(tmpl)).Methods("GET")
 
 	fmt.Println("Listening port 3000")
 	log.Fatal(http.ListenAndServe(os.Getenv("PORT"), r))
