@@ -13,7 +13,7 @@
 
 - 🖼️ **Image Sharing** - Stores images and allows you to share them
 - 🔗 **Url Shortening** - Creates shortened urls for any url you desire
-- 🔑 **Authorization** API Key authorization
+- 🔑 **Authorization** - API Key authorization
 
 ---
 
