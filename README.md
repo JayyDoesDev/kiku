@@ -13,9 +13,23 @@
 
 - 🖼️ **Image Sharing** - Stores images and allows you to share them
 - 🔗 **Url Shortening** - Creates shortened urls for any url you desire
-- 🔑 **Authorization** API Key authorization 
+- 🔑 **Authorization** API Key authorization
 
-## Project Structure
+---
+
+## 🖼️ Preview
+### Web Page
+<p align="center"><img src="https://github.com/jayydoesdev/kiku/blob/main/.github/assets/preview_1.png?raw=true" alt="Web Page Preview" width="700"/></p>
+
+### Image Sharing
+<p align="center"><img src="https://github.com/jayydoesdev/kiku/blob/main/.github/assets/preview_2.png?raw=true" alt="Image Sharing Preview" width="700"/></p>
+
+### Url Shortening
+<p align="center"><img src="https://github.com/jayydoesdev/kiku/blob/main/.github/assets/preview_3.png?raw=true" alt="Url Shortening Preview" width="700"/></p>
+
+---
+
+## 📁 Project Structure
 ```
 ├── kiku/
 │   ├── db/         #  Database functions
@@ -26,3 +40,41 @@
 │   └── storage/    # Image storage
 └── main.go
 ```
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/jayydoesdev/kiku.git
+cd kiku
+```
+
+### 2. Set up your environment
+
+Create a `.env` file in the root:
+
+```env
+API_URL=your_api_url
+PORT=:port
+TOKEN=your_api_token
+DATABASE_URL=mongodb_url
+```
+### 3. Run the bot
+
+```bash
+go run main.go
+```
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License — see [LICENSE](LICENSE) for details.
+
+<a href="https://github.com/jayydoesdev/kiku/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=jayydoesdev/kiku" />
+</a>
+
